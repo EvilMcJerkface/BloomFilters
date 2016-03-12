@@ -34,7 +34,7 @@
         <h1>
 <a id="invertible-bloom-filters" class="anchor" href="#invertible-bloom-filters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Invertible Bloom Filters</h1>
 
-<p>On using Invertible Bloom filters for estimating differences between sets of key/value pairs. Written in C#.</p>
+<p>On using invertible Bloom filters for estimating differences between sets of key/value pairs. Written in C#.</p>
 
 <p>This work is in very early stages, exploring options, performance and characteristics.The goal is to efficiently determine the differences between two sets of key/value pairs. </p>
 
@@ -44,8 +44,6 @@
 <li>Any pure items that after substraction have count zero, but do not have zero for the value hash, will have their Id added to the set of differences. Intuitively this means any item stored by itself in the same location across both Bloom filters, has a different value when the hash of the values is different.</li>
 <li>During decoding, any of the locations finally ending up with count equal to zero, will be evaluated for non zero identifier hashes or non zero value hashes. Intuitively this means that during decoding we can identify difference not only from pure locations, but also from locations that transition from pure to zero.</li>
 </ol>
-
-<p>Additionaly, an option was added for splitting the hash values out in a bucket per hash function. Testing however showed that splitting the hash values per hash function caused a significant increase in the error rate.</p>
 
 <p>Included with the Bloom Filter is a strata estimator (as described in the above paper). Based upon the strata estimator, a hybrid strata estimator was implemented utilizing the b-bit minwise hash (described in <a href="http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf">http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf</a>). </p>
 
@@ -61,14 +59,14 @@
 <h2>
 <a id="overloading-a-bloom-filter" class="anchor" href="#overloading-a-bloom-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overloading a Bloom filter</h2>
 
-<p>When utilizing an invertible Bloom filter within the capacity it was sized for, the count will seldom exceed 2 or 3. However, when utilizing estimators, the idea is that the invertible Bloom filter will be utilized at a much higher capacity than it was sized for, thus accepting a higher error rate. To account for both scenario's, the actual count type is configurable. Two types will be supported out of the box: sbyte and int.</p>
+<p>When utilizing an invertible Bloom filter within the capacity it was sized for, the count will seldom exceed 2 or 3. However, when utilizing estimators, the idea is that the invertible Bloom filter will be utilized at a much higher capacity than it was sized for, thus accepting a higher error rate and much higher count values. To account for both scenario's, the actual count type is configurable. Two types will be supported out of the box: sbyte and int.</p>
 
 <h2>
 <a id="empirical-data" class="anchor" href="#empirical-data" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Empirical data</h2>
 
 <p>Testing showed that a capacity of 15 with a strata of 7 is ideal in most cases, except for extremely large sets with a high expected difference, in which case a capacity of 1000 and a strata of 13 performed well.</p>
 
-<p>Invertible Bloom filters of relatively low capacity (total size less than 300 kilobytes) performed very well on medium sized sets (1000) with a lower number of differences (50) for detecting differences between keys in both sets. Invertible Bloom filters of much higher capacity (2* size**2) were needed to detect differences in value for keys that were in both sets.</p>
+<p>Invertible Bloom filters of relatively low capacity (total size less than 300 kilobytes) performed very well on medium sized sets (1000) with a lower number of differences (50) for detecting differences between keys in both sets. Invertible Bloom filters of much higher capacity (2* size**2) were needed to detect differences in value for keys that were in both sets. The conclusion was that the invertible Bloom filter for key/value pairs as presented did not perform well on detecting different values for the same key across the sets. The invertible Bloom filter focuses on the keys and their counts, and detecting differences in the values only becomes possible at very sparse (high capacity) Bloom filters with many pure positions.</p>
 
 <h2>
 <a id="wishlist" class="anchor" href="#wishlist" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Wishlist</h2>
