@@ -1,46 +1,41 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-
   <head>
-    <meta charset='utf-8'>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="Bloomfilters : Invertible Bloom filters for efficiently estimating set differences.">
+    <title>Bloomfilters by theezak</title>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-
-    <title>Bloomfilters</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
   </head>
-
   <body>
+    <div class="wrapper">
+      <header>
+        <h1>Bloomfilters</h1>
+        <p>Invertible Bloom filters for efficiently estimating set differences.</p>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/theezak/BloomFilters">View on GitHub</a>
+        <p class="view"><a href="https://github.com/theezak/BloomFilters">View the Project on GitHub <small>theezak/BloomFilters</small></a></p>
 
-          <h1 id="project_title">Bloomfilters</h1>
-          <h2 id="project_tagline">Invertible Bloom filters for efficiently estimating set differences.</h2>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/theezak/BloomFilters/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/theezak/BloomFilters/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
+        <ul>
+          <li><a href="https://github.com/theezak/BloomFilters/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/theezak/BloomFilters/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/theezak/BloomFilters">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
         <h1>
 <a id="invertible-bloom-filters" class="anchor" href="#invertible-bloom-filters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Invertible Bloom Filters</h1>
 
 <p>On using invertible Bloom filters for estimating differences between sets of key/value pairs. Written in C#.</p>
 
-<p>The goal is to efficiently determine the differences between two sets of key/value pairs. </p>
+<p>The goal is to efficiently determine the differences between two sets of key/value pairs. The first approach is based upon invertible Bloom filters, as described in "What’s the Difference? Efﬁcient Set Reconciliation without Prior Context" (David Eppstein, Michael T. Goodrich, Frank Uyeda, George Varghese, 2011, <a href="http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf">http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf</a>) . A similar data structure, but not extended to detect set differences, is described in "Invertible Bloom Lookup Tables" (Michael T. Goodrich, Michael Mitzenmacher, 2015, <a href="http://arxiv.org/pdf/1101.2245v3.pdf">http://arxiv.org/pdf/1101.2245v3.pdf</a>). </p>
 
-<p>The first approach is based upon invertible Bloom filters, as described in "What’s the Difference? Efﬁcient Set Reconciliation without Prior Context" (David Eppstein, Michael T. Goodrich, Frank Uyeda, George Varghese, 2011, <a href="http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf">http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf</a>) . A similar data structure, but not extended to detect set differences, is described in "Invertible Bloom Lookup Tables" (Michael T. Goodrich, Michael Mitzenmacher, 2015, <a href="http://arxiv.org/pdf/1101.2245v3.pdf">http://arxiv.org/pdf/1101.2245v3.pdf</a>). </p>
-
-<p>After implementing the data structure as described in the paper, it was noted that the data structure detected changes in the keys, but did not perform equally well at detecting changes in the values. An alternative solution is presented in the form of a reverse invertible Bloom filter (see in <a href="https://drive.google.com/file/d/0B1bvyH2cU0m4N3BEWWQxWV9PUmc/view?usp=sharing">https://drive.google.com/file/d/0B1bvyH2cU0m4N3BEWWQxWV9PUmc/view?usp=sharing</a> ).</p>
+<p>After implementing the data structure, it was noted that the data structure detected changes in the keys, but did not perform equally well at detecting changes in the values. An alternative solution is presented in the form of a reverse invertible Bloom filter (see in <a href="https://drive.google.com/file/d/0B1bvyH2cU0m4N3BEWWQxWV9PUmc/view?usp=sharing">https://drive.google.com/file/d/0B1bvyH2cU0m4N3BEWWQxWV9PUmc/view?usp=sharing</a> ).</p>
 
 <p>Included with the reverse invertible Bloom Filter implementation is a strata estimator (as described in <a href="http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf">http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf</a> ). Based upon the strata estimator, a hybrid strata estimator was implemented utilizing the b-bit minwise hash (see <a href="http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf">http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf</a>). </p>
 
@@ -61,12 +56,16 @@
 <h2>
 <a id="overloading-a-bloom-filter" class="anchor" href="#overloading-a-bloom-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Overloading a Bloom filter</h2>
 
-<p>When utilizing an invertible Bloom filter within the capacity it was sized for, the count will seldom exceed 2 or 3. However, when utilizing estimators, the idea is that the invertible Bloom filter will be utilized at a much higher capacity than it was sized for, thus accepting a higher error rate and much higher count values. To account for both scenario's, the actual count type is configurable. Two types will be supported out of the box: sbyte and int.</p>
+<p>When utilizing an invertible Bloom filter within the capacity it was sized for, the count will seldom exceed 2 or 3. However, when utilizing estimators, the idea is that the invertible Bloom filter will be utilized at a much higher capacity than it was sized for, thus accepting a higher error rate and much higher count values. To account for both scenario's, the actual count type is configurable. Four types are supported out of the box: sbyte, short, int and long. Always ensure that the count type used can handle highly folded filters. WHen the difference between two sets is small, there can be as few as 30 or 40 cells whose combined count equals the total set size. The counters will not overflow, but stay at maximum or minimum value. Overflow scenario's will however negatively impact results and performance. It is better to choose a slightly larger count type and be able to utilize folding, than it is to use a smaller count type and encounter overflows.</p>
 
 <h2>
 <a id="steps-for-calculating-the-set-difference" class="anchor" href="#steps-for-calculating-the-set-difference" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Steps for calculating the set difference</h2>
 
-<p>When two parties, A and B, want to determine their set difference, one of the parties, lets say party A, initiates the process by sending an estimator that contains all items in its set. The estimator provides a low overhead, that can be shown to be at most in the order of the difference between the two sets. Party B will compare the estimator against its local estimator and generate an estimate of the size of the difference. The second step exists of party B sending a Bloom filter containing all its elements, but with a capacity equal to the size of the difference. The overhead of this communication is in the order of the number of differences. Party A receives this Bloom filter and subtracts it from its local Bloom filter. After decoding the result of the subtraction, party A will have three sets of keys: keys for elements only at party B, keys for elements only at party A and keys for elements that have the same key at party A and party B, but have a different value across party A and party B. The final step is exchanging the items that were different between party A and party B, which again can be done in the order of the number of differences.</p>
+<p>When two parties, A and B, want to determine their set difference, one of the parties, lets say party A, initiates the process by sending an estimator that contains all items in its set. The estimator provides a low overhead, that can be shown to be at most in the order of the difference between the two sets. Party B will compare the estimator against its local estimator and generate an estimate of the size of the difference. </p>
+
+<p>The second step exists of party B sending a Bloom filter containing all its elements, but with a capacity equal to the size of the difference. The overhead of this communication is in the order of the number of differences. Party A receives this Bloom filter and subtracts it from its local Bloom filter. After decoding the result of the subtraction, party A will have three sets of keys: keys for elements only at party B, keys for elements only at party A and keys for elements that have the same key at party A and party B, but have a different value across party A and party B. </p>
+
+<p>The final step is exchanging the items that were different between party A and party B, which again can be done in the order of the number of differences found.</p>
 
 <h2>
 <a id="computational-overhead" class="anchor" href="#computational-overhead" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Computational overhead</h2>
@@ -106,17 +105,12 @@
 
 <p>Although this is initially just a testbed, an obvious wishlist item is a buffer pool to counteract some of the horrible things the Bloom Filter does to memory management.</p>
       </section>
-    </div>
-
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Bloomfilters maintained by <a href="https://github.com/theezak">theezak</a></p>
-        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/theezak">theezak</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
     </div>
-
+    <script src="javascripts/scale.fix.js"></script>
     
-
   </body>
 </html>
