@@ -37,7 +37,7 @@
 
 <p>After implementing the data structure, it was noted that the data structure detected changes in the keys, but did not perform equally well at detecting changes in the values. An alternative solution is presented in the form of a reverse invertible Bloom filter (see in <a href="https://drive.google.com/file/d/0B1bvyH2cU0m4N3BEWWQxWV9PUmc/view?usp=sharing">https://drive.google.com/file/d/0B1bvyH2cU0m4N3BEWWQxWV9PUmc/view?usp=sharing</a> ).</p>
 
-<p>Included with the reverse invertible Bloom Filter implementation is a strata estimator (as described in <a href="http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf">http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf</a> ). Based upon the strata estimator, a hybrid strata estimator was implemented utilizing the b-bit minwise hash (see <a href="http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf">http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf</a>). </p>
+<p>Included with the reverse invertible Bloom Filter implementation is a strata estimator (as described in <a href="http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf">http://conferences.sigcomm.org/sigcomm/2011/papers/sigcomm/p218.pdf</a> ). Based upon the strata estimator, a hybrid strata estimator is implemented utilizing the b-bit minwise hash (see <a href="http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf">http://research.microsoft.com/pubs/120078/wfc0398-liPS.pdf</a>). </p>
 
 <p>The estimator is important, because an estimate of the number of differences is needed to pick a proper sized Bloom filter that can be decoded. The size of the invertible Bloom filter needed for detecting the changes between two sets is not dependent upon the set sizes, but upon the size of the difference.  For example, 30 differences between two sets of 500000 elements each can be fully detected by a 5kb invertible Bloom filter. On the other hand, 40000 differences between two sets of 60000 items each can take a Bloom filter of 3.3 megabytes. </p>
 
@@ -46,7 +46,7 @@
 <h2>
 <a id="resizing-a-bloom-filter" class="anchor" href="#resizing-a-bloom-filter" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Resizing a Bloom filter</h2>
 
-<p>A Bloom filter can be folded through any factor of its size. For example: a Bloom filter with 500 cells can be folded by the following factors: 1, 2, 4, 5, 10, 20, 25, 50, 100, 125, 250, 500. A strategy is provided for folding, including a strategy that sizes Bloom filter with smooth numbers to increase the folding opportunities. Based upon the folding operator, a compression operator is provided that attempts to reduce the size of a Bloom filter utilized under its capacity without impacting its error rate. Similar fold and compress operations are provided for estimators.</p>
+<p>A Bloom filter can be folded through any factor of its size. For example: a Bloom filter with 500 cells can be folded by the following factors: 1, 2, 4, 5, 10, 20, 25, 50, 100, 125, 250, 500. A strategy is provided for folding, including a strategy that sizes Bloom filters with smooth numbers to increase the folding opportunities (see <a href="http://cedric.cnam.fr/fichiers/art_2629.pdf">http://cedric.cnam.fr/fichiers/art_2629.pdf</a>, <a href="https://en.wikipedia.org/wiki/Smooth_number">https://en.wikipedia.org/wiki/Smooth_number</a> and <a href="http://people.math.gatech.edu/%7Eecroot/smooth6.pdf">http://people.math.gatech.edu/~ecroot/smooth6.pdf</a>, demonstrating that many smooth numbers exist between x and x+sqrt(x)). Based upon the folding operator, a compression operator is provided that attempts to reduce the size of a Bloom filter utilized under its capacity without impacting its error rate. Similar fold and compress operations are provided for estimators.</p>
 
 <h2>
 <a id="serialization" class="anchor" href="#serialization" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Serialization</h2>
@@ -80,12 +80,12 @@
 <p>A practial scenario would be that all parties agree upon a pre-determined size for the estimator and the filter, typically larger than the maximum size anticipated. The following scenario's are possible:</p>
 
 <ul>
-<li>The estimator sent has at least the required capacity and strata count needed by the receiver to represent the set. The two estimators will decode correctly and provide an estimate.</li>
-<li>The estimator sent does not have a large enough capacity or large enough strata for the receiver their dataset. The receiving party has two options:
+<li>The estimator sent has at least the required capacity and strata count needed by the receiver to represent its local set. The two estimators will decode correctly and provide an estimate.</li>
+<li>The estimator sent does not have a large enough capacity or large enough strata for the dataset at the receiver. The receiving party has two options:
 
 <ul>
 <li>Send their local estimator back. This estimator will have the capacity needed and the other party will be able to calculate an estimate.</li>
-<li>Assume that a failed decode means that the difference is large and close to the total item count of the Bloom filter. You can choose to send the whole Bloom filter (possibly still trading recognized differences versus some level of folding).</li>
+<li>Assume that a failed decode means that the difference is large and close to the total item count of the Bloom filter. You can choose to send the whole Bloom filter (still compressing the Bloom filter).</li>
 </ul>
 </li>
 </ul>
@@ -94,7 +94,7 @@
 
 <ul>
 <li>Estimators are helpful in avoiding over-sized Bloom filters, but you can exchange Bloom filters even without an estimate. There is just a higher risk of either wasting band width or only recognizing a relatively small fraction of the differences.</li>
-<li>Bloom filters that are not under sized will still yield some differences, and thus provide progress toward eliminating the differences.</li>
+<li>Bloom filters that are under sized will still yield some differences, and thus provide progress toward eliminating the differences.</li>
 <li>The only major obstacle occurs when the Bloom filters are not compatible, for example because they can't be resized to have the same size (no shared factor), have different hash functions or have different hash counts. A minor obstacle is two estimators that do not have a shared factor, but you could still choose to exchange the Bloom filters.</li>
 </ul>
 
